@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MHTCET College Predictor</title>
+  <style>
+    body {
+      background-color: #0f0f0f;
+      color: #00ff00;
+      font-family: 'Courier New', Courier, monospace;
+      padding: 20px;
+    }
+    h1, h2 {
+      color: #00ffcc;
+    }
+    label {
+      display: block;
+      margin-top: 10px;
+    }
+    select, input, button {
+      background-color: #1a1a1a;
+      color: #00ff00;
+      border: 1px solid #00ff00;
+      padding: 5px;
+      width: 100%;
+    }
+    .form-section {
+      max-width: 500px;
+      margin: auto;
+    }
+    .result {
+      margin-top: 30px;
+      border-top: 1px solid #00ffcc;
+      padding-top: 20px;
+    }
+    .college {
+      border-bottom: 1px solid #00ffcc;
+      margin-bottom: 20px;
+      padding-bottom: 10px;
+    }
+  </style>
+</head>
+<body>
+  <h1>MHTCET College Predictor</h1>
+
+  <div class="form-section">
+    <label for="mode">Prediction Mode</label>
+    <select id="mode" onchange="toggleMode()">
+      <option value="percentile">Predict by Percentile</option>
+      <option value="rank">Predict by Rank</option>
+      <option value="college">Predict by College</option>
+    </select>
+
+    <div id="predictByPercentileRank">
+      <label for="score">Enter Percentile / Rank</label>
+      <input type="number" id="score">
+
+      <label for="category">Category</label>
+      <select id="category">
+        <option>Open</option>
+        <option>SC</option>
+        <option>ST</option>
+        <option>OBC</option>
+      </select>
+
+      <label for="gender">Gender</label>
+      <select id="gender">
+        <option>Male</option>
+        <option>Female</option>
+      </select>
+
+      <label for="branch">Preferred Branch</label>
+      <select id="branch">
+        <option>Computer Science Engineering</option>
+        <option>AI and Machine Learning</option>
+        <option>AI and Data Science</option>
+        <option>Electronics and Telecommunication</option>
+        <option>Electronics and Computer Science</option>
+        <option>Electrical Engineering</option>
+      </select>
+
+      <label for="city">Preferred City</label>
+      <select id="city">
+        <option>Mumbai City</option>
+        <option>Mumbai Suburban</option>
+        <option>Navi Mumbai</option>
+        <option>Pune</option>
+      </select>
+
+      <label for="district">12th Passing District</label>
+      <select id="district">
+        <option>Mumbai City</option>
+        <option>Mumbai Suburban</option>
+        <option>Pune</option>
+      </select>
+    </div>
+
+    <div id="predictByCollege" style="display: none;">
+      <label for="collegeName">College Name</label>
+      <input type="text" id="collegeName">
+
+      <label for="collegeBranch">Preferred Branch</label>
+      <select id="collegeBranch">
+        <option>Computer Science Engineering</option>
+        <option>AI and Machine Learning</option>
+        <option>AI and Data Science</option>
+        <option>Electronics and Telecommunication</option>
+        <option>Electronics and Computer Science</option>
+        <option>Electrical Engineering</option>
+      </select>
+
+      <label for="collegeCategory">Category</label>
+      <select id="collegeCategory">
+        <option>Open</option>
+        <option>SC</option>
+        <option>ST</option>
+        <option>OBC</option>
+      </select>
+
+      <label for="collegeDistrict">12th Passing District</label>
+      <select id="collegeDistrict">
+        <option>Mumbai City</option>
+        <option>Mumbai Suburban</option>
+        <option>Pune</option>
+      </select>
+    </div>
+
+    <button onclick="predictColleges()">Predict</button>
+
+    <div class="result" id="result">
+      <!-- Prediction results will be shown here -->
+    </div>
+  </div>
+
+  <script>
+    function toggleMode() {
+      const mode = document.getElementById('mode').value;
+      document.getElementById('predictByPercentileRank').style.display = (mode === 'college') ? 'none' : 'block';
+      document.getElementById('predictByCollege').style.display = (mode === 'college') ? 'block' : 'none';
+    }
+
+    function predictColleges() {
+      const mode = document.getElementById('mode').value;
+      const resultDiv = document.getElementById('result');
+      resultDiv.innerHTML = '<p>Fetching results based on your inputs...</p>';
+
+      setTimeout(() => {
+        if (mode === 'college') {
+          const name = document.getElementById('collegeName').value;
+          const branch = document.getElementById('collegeBranch').value;
+          const category = document.getElementById('collegeCategory').value;
+          const district = document.getElementById('collegeDistrict').value;
+
+          resultDiv.innerHTML = `
+            <div class="college">
+              <h2>${name}</h2>
+              <p><strong>Branch:</strong> ${branch}</p>
+              <p><strong>Category:</strong> ${category}</p>
+              <p><strong>District:</strong> ${district}</p>
+              <p><strong>Last Year Cutoff:</strong> 88.43%ile | Rank: 15,238</p>
+            </div>
+          `;
+
+        } else {
+          const score = document.getElementById('score').value;
+          const category = document.getElementById('category').value;
+          const gender = document.getElementById('gender').value;
+          const branch = document.getElementById('branch').value;
+          const city = document.getElementById('city').value;
+          const district = document.getElementById('district').value;
+
+          resultDiv.innerHTML = `
+            <div class="college">
+              <h2>Fr. CRCE, Bandra</h2>
+              <p><strong>Branch:</strong> ${branch}</p>
+              <p><strong>City:</strong> ${city}</p>
+              <p><strong>Category:</strong> ${category}</p>
+              <p><strong>Gender:</strong> ${gender}</p>
+              <p><strong>Home District:</strong> ${district}</p>
+              <p><strong>Last Year Cutoff:</strong> 90.23%ile | Rank: 12,984</p>
+            </div>
+            <div class="college">
+              <h2>KJ Somaiya, Vidyavihar</h2>
+              <p><strong>Branch:</strong> ${branch}</p>
+              <p><strong>City:</strong> ${city}</p>
+              <p><strong>Category:</strong> ${category}</p>
+              <p><strong>Gender:</strong> ${gender}</p>
+              <p><strong>Home District:</strong> ${district}</p>
+              <p><strong>Last Year Cutoff:</strong> 89.75%ile | Rank: 14,221</p>
+            </div>
+          `;
+        }
+      }, 1000);
+    }
+  </script>
+</body>
+</html>
